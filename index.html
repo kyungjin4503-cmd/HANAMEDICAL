@@ -1,95 +1,152 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HANA MEDICAL - 의료기기 전문 기업</title>
+<style>
+/* 기본 스타일 및 테마 */
+body { font-family: 'Malgun Gothic', sans-serif; margin: 0; padding: 0; color: #333; line-height: 1.6; scroll-behavior: smooth; }
+
+header { 
+display: flex; 
+align-items: center; 
+padding: 15px 5%; 
+background: #fff; 
+border-bottom: 2px solid #0056b3; 
+position: sticky; 
+top: 0; 
+z-index: 1000; 
+}
+.logo img { height: 50px; display: block; margin-right: 40px; }
+
+nav ul { list-style: none; display: flex; margin: 0; padding: 0; }
+nav ul li { position: relative; margin-right: 10px; }
+nav ul li a { text-decoration: none; color: #0056b3; font-weight: bold; padding: 10px 15px; display: block; transition: 0.3s; cursor: pointer; }
+nav ul li:hover > a { background: #0056b3; color: #fff; border-radius: 4px; }
+
+.dropdown { display: none; position: absolute; background: #fff; box-shadow: 0 8px 16px rgba(0,0,0,0.1); min-width: 180px; z-index: 10; border-top: 2px solid #0056b3; top: 100%; left: 0; }
+nav ul li:hover .dropdown { display: block; }
+.dropdown li a { padding: 12px 15px; font-weight: normal; border-bottom: 1px solid #eee; font-size: 14px; }
+
+.container { padding: 40px 10%; min-height: 600px; }
+.page-section { display: none; }
+.page-section.active { display: block; }
+
+.home-hero { 
+width: 100%; 
+height: 450px; 
+background: url('Main image.png') no-repeat center center; 
+background-size: cover; 
+border-radius: 10px; 
+margin-top: 20px; 
+display: flex; 
+align-items: center; 
+justify-content: center; 
+color: white; 
+text-shadow: 2px 2px 4px rgba(0,0,0,0.5); 
+}
+
+.product-item { display: flex; gap: 40px; align-items: flex-start; padding: 40px 0; border-bottom: 1px solid #eee; }
+.product-image { flex: 1; }
+.product-image img { width: 100%; border: 1px solid #ddd; border-radius: 8px; }
+.product-info { flex: 1.5; }
+.product-info h3 { color: #0056b3; margin-top: 0; font-size: 24px; border-bottom: 2px solid #e7f1ff; padding-bottom: 10px; }
+
+table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 13px; }
+table, th, td { border: 1px solid #0056b3; }
+th { background: #e7f1ff; color: #0056b3; padding: 8px; }
+td { padding: 6px; text-align: center; }
+
+.contact-form { max-width: 600px; margin: 0 auto; background: #f9f9f9; padding: 30px; border-radius: 10px; border-top: 5px solid #0056b3; }
+.btn-send { background: #0056b3; color: white; border: none; padding: 15px; cursor: pointer; width: 100%; font-weight: bold; }
+
+footer { background: #f4f4f4; color: #555; padding: 40px 10%; font-size: 14px; border-top: 1px solid #ddd; margin-top: 60px; }
+</style>
+</head>
+<body>
+
+<header>
+<div class="logo"><img src="Logo.png" alt="HANA MEDICAL Logo"></div>
+<nav>
+<ul>
+<li><a onclick="showPage('home')">Home</a></li>
+<li><a onclick="showPage('company')">Company info</a></li>
+<li>
+<a>Product</a>
+<ul class="dropdown">
+<li><a onclick="showPage('cat-sensor')">Single-use Sensor</a></li>
+<li><a onclick="showPage('cat-patch')">Single-use Patch</a></li>
+<li><a onclick="showPage('cat-nibp')">Single-use NIBP</a></li>
+</ul>
+</li>
+<li><a onclick="showPage('contact')">Contact us</a></li>
+</ul>
+</nav>
+</header>
+
+<div class="container">
+<section id="home" class="page-section active">
+<h1 style="color:#0056b3;">혁신적인 의료 솔루션, HANA MEDICAL</h1>
+<div class="home-hero">
+<h2 style="font-size: 32px;">Quality & Safety First</h2>
+</div>
+</section>
+
+<section id="company" class="page-section">
+<h2 style="color:#0056b3;">Company info</h2>
+<div id="company-content" style="font-size: 18px; white-space: pre-line;">데이터를 불러오는 중...</div>
+</section>
+
+<section id="cat-sensor" class="page-section">
+<h2 style="color:#0056b3; border-left: 5px solid #0056b3; padding-left: 15px;">Single-use Sensor</h2>
+<div id="list-sensor"></div>
+</section>
+
+<section id="cat-patch" class="page-section">
+<h2 style="color:#0056b3; border-left: 5px solid #0056b3; padding-left: 15px;">Single-use Patch</h2>
+<div id="list-patch"></div>
+</section>
+
+<section id="cat-nibp" class="page-section">
+<h2 style="color:#0056b3; border-left: 5px solid #0056b3; padding-left: 15px;">Single-use NIBP</h2>
+<div id="list-nibp"></div>
+</section>
+
+    <section id="contact" class="page-section">
+        <div class="contact-form">
+            <h2>Contact Us</h2>
+            <form id="emailForm">
+                <input type="text" id="senderName" placeholder="사용자 이름 / User Name" style="width:100%; padding:10px; margin-bottom:10px;">
+                <input type="email" id="senderEmail" placeholder="메일 주소 / E-mail" style="width:100%; padding:10px; margin-bottom:10px;">
+                <textarea id="emailBody" rows="6" placeholder="문의 내용 / Contents" style="width:100%; padding:10px; margin-bottom:10px;"></textarea>
+                <button type="button" onclick="sendMail()" class="btn-send">Send</button>
+            </form>
+        </div>
+    </section>
+   <section id="contact" class="page-section">
+    <div class="contact-form">
+        <h2>Contact Us</h2>
+        <form action="https://formspree.io/f/mjgljaak" method="POST" id="emailForm">
+            <input type="text" name="userName" placeholder="사용자 이름" required style="width:100%; padding:10px; margin-bottom:10px; border:1px solid #ccc; border-radius:4px;">
+            <input type="email" name="userEmail" placeholder="발신 메일 주소" required style="width:100%; padding:10px; margin-bottom:10px; border:1px solid #ccc; border-radius:4px;">
+            <textarea name="message" rows="6" placeholder="문의 내용" required style="width:100%; padding:10px; margin-bottom:10px; border:1px solid #ccc; border-radius:4px;"></textarea>
+            
+            <button type="submit" class="btn-send">전송하기</button>
+        </form>
+    </div>
+</section>
+
 <script>
-    // 1. 페이지 전환 함수
-    function showPage(pageId) {
-        const target = document.getElementById(pageId);
-        if (target) {
-            document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
-            target.classList.add('active');
-            window.scrollTo(0, 0);
-        }
-    }
+    /* 기존 스크립트 중 sendMail() 함수는 이제 필요 없으므로 삭제하거나 무시해도 됩니다. 
+       HTML의 form 태그가 직접 전송을 담당하게 바뀌었습니다. */
 
-    // 2. 제품 리스트 정의
-    const productList = [
-        { id: 1, cat: 'sensor', name: "Product 1", img: "Product 1.PNG", file: "product 1.txt" },
-        { id: 2, cat: 'sensor', name: "Product 2", img: "Product 2.PNG", file: "product 2.txt" },
-        { id: 3, cat: 'sensor', name: "Product 3", img: "Product 3.PNG", file: "product 3.txt" },
-        { id: 4, cat: 'patch', name: "Product 4", img: "Product 4.PNG", file: "product 4.txt" },
-        { id: 5, cat: 'patch', name: "Product 5", img: "Product 5.PNG", file: "product 5.txt" },
-        { id: 6, cat: 'patch', name: "Product 6", img: "Product 6.PNG", file: "product 6.txt" },
-        { id: 7, cat: 'nibp', name: "Product 7", img: "Product 7.PNG", file: "product 7.txt" },
-        { id: 8, cat: 'nibp', name: "Product 8", img: "Product 8.PNG", file: "product 8.txt" }
-    ];
-
-    // 3. 데이터 로딩 및 렌더링 함수
-    async function fetchAndRenderData() {
-        // 회사 소개글 불러오기
-        try {
-            const companyRes = await fetch('Company description.txt');
-            if (companyRes.ok) {
-                const companyText = await companyRes.text();
-                const companyContent = document.getElementById('company-content');
-                if (companyContent) companyContent.innerText = companyText;
-            }
-        } catch (e) { console.error("소개글 로딩 실패", e); }
-
-        // 제품별 데이터 불러오기
-        for (const p of productList) {
-            try {
-                const res = await fetch(p.file);
-                if (!res.ok) throw new Error("파일을 찾을 수 없음");
-                
-                const text = await res.text();
-                const specPart = text.substring(text.indexOf("Model"));
-                
-                const containerId = `list-${p.cat}`;
-                const container = document.getElementById(containerId);
-                if (container) {
-                    const html = `
-                        <div class="product-item">
-                            <div class="product-image"><img src="${p.img}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/300?text=No+Image'"></div>
-                            <div class="product-info">
-                                <h3>${p.name}</h3>
-                                <p>This is medical device</p>
-                                ${makeTable(specPart)}
-                            </div>
-                        </div>
-                    `;
-                    container.innerHTML += html;
-                }
-            } catch (e) { 
-                console.error(`${p.name} (${p.file}) 로딩 실패:`, e); 
-            }
-        }
-    }
-
-    // 4. 테이블 생성 보조 함수
-    function makeTable(specs) {
-        if (!specs || specs.indexOf("Model") === -1) return "<p>사양 정보가 없습니다.</p>";
-        let rows = specs.trim().split('\n');
-        let html = '<table><thead><tr>';
-        rows[0].split('\t').forEach(h => html += `<th>${h.trim()}</th>`);
-        html += '</tr></thead><tbody>';
-        for(let i=1; i<rows.length; i++) {
-            if(!rows[i].trim()) continue;
-            html += '<tr>';
-            rows[i].split('\t').forEach(c => html += `<td>${c.trim()}</td>`);
-            html += '</tr>';
-        }
-        return html + '</tbody></table>';
-    }
-
-    // 5. 초기화 실행 (모든 로직을 여기로 모았습니다)
-    window.onload = function() {
-        // 데이터 렌더링 실행
-        fetchAndRenderData();
-
-        // 이메일 폼 알림 설정 (요소가 있을 때만 실행하여 에러 방지)
-        const emailForm = document.getElementById("emailForm");
-        if (emailForm) {
-            emailForm.onsubmit = function() {
-                alert("문의해주셔서 감사합니다. 메일이 정상적으로 발송되었습니다.");
-            };
-        }
+    // 만약 전송 후 커스텀 알림을 띄우고 싶다면 아래 코드를 사용하세요.
+    const form = document.getElementById("emailForm");
+    form.onsubmit = function() {
+        alert("문의해주셔서 감사합니다.");
     };
 </script>
+</div>
+
+<footer>
