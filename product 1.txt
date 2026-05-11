@@ -1,0 +1,14 @@
+Product Name: 1
+Description: This is medical device
+
+Model	Width (mm)	Length (mm)	Heigh (mm)
+A1	100	10000	40
+A2	100	10000	40
+A3	100	10000	40
+A4	100	10000	40
+A5	100	10000	40
+A6	200	20000	50
+A7	200	20000	50
+A8	200	20000	50
+A9	200	20000	50
+A10	200	20000	50
