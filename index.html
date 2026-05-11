@@ -1,16 +1,15 @@
-<!DOCTYPE html>
-<html lang="ko">
-<body>
-
 <script>
     // 1. 페이지 전환 함수
     function showPage(pageId) {
-        document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
-        document.getElementById(pageId).classList.add('active');
-        window.scrollTo(0, 0);
+        const target = document.getElementById(pageId);
+        if (target) {
+            document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
+            target.classList.add('active');
+            window.scrollTo(0, 0);
+        }
     }
 
-    // 2. 제품 리스트 정의 (파일명 대소문자를 실제 파일과 반드시 맞추세요!)
+    // 2. 제품 리스트 정의
     const productList = [
         { id: 1, cat: 'sensor', name: "Product 1", img: "Product 1.PNG", file: "product 1.txt" },
         { id: 2, cat: 'sensor', name: "Product 2", img: "Product 2.PNG", file: "product 2.txt" },
@@ -26,11 +25,11 @@
     async function fetchAndRenderData() {
         // 회사 소개글 불러오기
         try {
-            // 파일명이 정확히 일치해야 합니다.
             const companyRes = await fetch('Company description.txt');
             if (companyRes.ok) {
                 const companyText = await companyRes.text();
-                document.getElementById('company-content').innerText = companyText;
+                const companyContent = document.getElementById('company-content');
+                if (companyContent) companyContent.innerText = companyText;
             }
         } catch (e) { console.error("소개글 로딩 실패", e); }
 
@@ -44,17 +43,20 @@
                 const specPart = text.substring(text.indexOf("Model"));
                 
                 const containerId = `list-${p.cat}`;
-                const html = `
-                    <div class="product-item">
-                        <div class="product-image"><img src="${p.img}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/300?text=No+Image'"></div>
-                        <div class="product-info">
-                            <h3>${p.name}</h3>
-                            <p>This is medical device</p>
-                            ${makeTable(specPart)}
+                const container = document.getElementById(containerId);
+                if (container) {
+                    const html = `
+                        <div class="product-item">
+                            <div class="product-image"><img src="${p.img}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/300?text=No+Image'"></div>
+                            <div class="product-info">
+                                <h3>${p.name}</h3>
+                                <p>This is medical device</p>
+                                ${makeTable(specPart)}
+                            </div>
                         </div>
-                    </div>
-                `;
-                document.getElementById(containerId).innerHTML += html;
+                    `;
+                    container.innerHTML += html;
+                }
             } catch (e) { 
                 console.error(`${p.name} (${p.file}) 로딩 실패:`, e); 
             }
@@ -77,13 +79,17 @@
         return html + '</tbody></table>';
     }
 
-    // 전송 알림
-    document.getElementById("emailForm").onsubmit = function() {
-        alert("문의해주셔서 감사합니다. 메일이 정상적으로 발송되었습니다.");
-    };
+    // 5. 초기화 실행 (모든 로직을 여기로 모았습니다)
+    window.onload = function() {
+        // 데이터 렌더링 실행
+        fetchAndRenderData();
 
-    // 초기화 실행
-    window.onload = fetchAndRenderData;
+        // 이메일 폼 알림 설정 (요소가 있을 때만 실행하여 에러 방지)
+        const emailForm = document.getElementById("emailForm");
+        if (emailForm) {
+            emailForm.onsubmit = function() {
+                alert("문의해주셔서 감사합니다. 메일이 정상적으로 발송되었습니다.");
+            };
+        }
+    };
 </script>
-</body>
-</html>
