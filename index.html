@@ -1,152 +1,99 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HANA MEDICAL - 의료기기 전문 기업</title>
-<style>
-/* 기본 스타일 및 테마 */
-body { font-family: 'Malgun Gothic', sans-serif; margin: 0; padding: 0; color: #333; line-height: 1.6; scroll-behavior: smooth; }
-
-header { 
-display: flex; 
-align-items: center; 
-padding: 15px 5%; 
-background: #fff; 
-border-bottom: 2px solid #0056b3; 
-position: sticky; 
-top: 0; 
-z-index: 1000; 
-}
-.logo img { height: 50px; display: block; margin-right: 40px; }
-
-nav ul { list-style: none; display: flex; margin: 0; padding: 0; }
-nav ul li { position: relative; margin-right: 10px; }
-nav ul li a { text-decoration: none; color: #0056b3; font-weight: bold; padding: 10px 15px; display: block; transition: 0.3s; cursor: pointer; }
-nav ul li:hover > a { background: #0056b3; color: #fff; border-radius: 4px; }
-
-.dropdown { display: none; position: absolute; background: #fff; box-shadow: 0 8px 16px rgba(0,0,0,0.1); min-width: 180px; z-index: 10; border-top: 2px solid #0056b3; top: 100%; left: 0; }
-nav ul li:hover .dropdown { display: block; }
-.dropdown li a { padding: 12px 15px; font-weight: normal; border-bottom: 1px solid #eee; font-size: 14px; }
-
-.container { padding: 40px 10%; min-height: 600px; }
-.page-section { display: none; }
-.page-section.active { display: block; }
-
-.home-hero { 
-width: 100%; 
-height: 450px; 
-background: url('Main image.png') no-repeat center center; 
-background-size: cover; 
-border-radius: 10px; 
-margin-top: 20px; 
-display: flex; 
-align-items: center; 
-justify-content: center; 
-color: white; 
-text-shadow: 2px 2px 4px rgba(0,0,0,0.5); 
-}
-
-.product-item { display: flex; gap: 40px; align-items: flex-start; padding: 40px 0; border-bottom: 1px solid #eee; }
-.product-image { flex: 1; }
-.product-image img { width: 100%; border: 1px solid #ddd; border-radius: 8px; }
-.product-info { flex: 1.5; }
-.product-info h3 { color: #0056b3; margin-top: 0; font-size: 24px; border-bottom: 2px solid #e7f1ff; padding-bottom: 10px; }
-
-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 13px; }
-table, th, td { border: 1px solid #0056b3; }
-th { background: #e7f1ff; color: #0056b3; padding: 8px; }
-td { padding: 6px; text-align: center; }
-
-.contact-form { max-width: 600px; margin: 0 auto; background: #f9f9f9; padding: 30px; border-radius: 10px; border-top: 5px solid #0056b3; }
-.btn-send { background: #0056b3; color: white; border: none; padding: 15px; cursor: pointer; width: 100%; font-weight: bold; }
-
-footer { background: #f4f4f4; color: #555; padding: 40px 10%; font-size: 14px; border-top: 1px solid #ddd; margin-top: 60px; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HANA MEDICAL - 의료기기 전문 기업</title>
+    <style>
+        /* 기존 스타일 유지 */
+        body { font-family: 'Malgun Gothic', sans-serif; margin: 0; padding: 0; color: #333; line-height: 1.6; scroll-behavior: smooth; }
+        header { display: flex; align-items: center; padding: 15px 5%; background: #fff; border-bottom: 2px solid #0056b3; position: sticky; top: 0; z-index: 1000; }
+        .logo img { height: 50px; display: block; margin-right: 40px; }
+        nav ul { list-style: none; display: flex; margin: 0; padding: 0; }
+        nav ul li { position: relative; margin-right: 10px; }
+        nav ul li a { text-decoration: none; color: #0056b3; font-weight: bold; padding: 10px 15px; display: block; transition: 0.3s; cursor: pointer; }
+        nav ul li:hover > a { background: #0056b3; color: #fff; border-radius: 4px; }
+        .dropdown { display: none; position: absolute; background: #fff; box-shadow: 0 8px 16px rgba(0,0,0,0.1); min-width: 180px; z-index: 10; border-top: 2px solid #0056b3; top: 100%; left: 0; }
+        nav ul li:hover .dropdown { display: block; }
+        .dropdown li a { padding: 12px 15px; font-weight: normal; border-bottom: 1px solid #eee; font-size: 14px; }
+        .container { padding: 40px 10%; min-height: 600px; }
+        .page-section { display: none; }
+        .page-section.active { display: block; }
+        .home-hero { width: 100%; height: 450px; background: url('Main image.png') no-repeat center center; background-size: cover; border-radius: 10px; margin-top: 20px; display: flex; align-items: center; justify-content: center; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .product-item { display: flex; gap: 40px; align-items: flex-start; padding: 40px 0; border-bottom: 1px solid #eee; }
+        .product-image { flex: 1; }
+        .product-image img { width: 100%; border: 1px solid #ddd; border-radius: 8px; }
+        .product-info { flex: 1.5; }
+        .product-info h3 { color: #0056b3; margin-top: 0; font-size: 24px; border-bottom: 2px solid #e7f1ff; padding-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 13px; }
+        table, th, td { border: 1px solid #0056b3; }
+        th { background: #e7f1ff; color: #0056b3; padding: 8px; }
+        td { padding: 6px; text-align: center; }
+        .contact-form { max-width: 600px; margin: 0 auto; background: #f9f9f9; padding: 30px; border-radius: 10px; border-top: 5px solid #0056b3; }
+        .btn-send { background: #0056b3; color: white; border: none; padding: 15px; cursor: pointer; width: 100%; font-weight: bold; }
+        footer { background: #f4f4f4; color: #555; padding: 40px 10%; font-size: 14px; border-top: 1px solid #ddd; margin-top: 60px; }
+    </style>
 </head>
 <body>
 
 <header>
-<div class="logo"><img src="Logo.png" alt="HANA MEDICAL Logo"></div>
-<nav>
-<ul>
-<li><a onclick="showPage('home')">Home</a></li>
-<li><a onclick="showPage('company')">Company info</a></li>
-<li>
-<a>Product</a>
-<ul class="dropdown">
-<li><a onclick="showPage('cat-sensor')">Single-use Sensor</a></li>
-<li><a onclick="showPage('cat-patch')">Single-use Patch</a></li>
-<li><a onclick="showPage('cat-nibp')">Single-use NIBP</a></li>
-</ul>
-</li>
-<li><a onclick="showPage('contact')">Contact us</a></li>
-</ul>
-</nav>
+    <div class="logo"><img src="Logo.png" alt="HANA MEDICAL Logo"></div>
+    <nav>
+        <ul>
+            <li><a onclick="showPage('home')">Home</a></li>
+            <li><a onclick="showPage('company')">Company info</a></li>
+            <li>
+                <a>Product</a>
+                <ul class="dropdown">
+                    <li><a onclick="showPage('cat-sensor')">Single-use Sensor</a></li>
+                    <li><a onclick="showPage('cat-patch')">Single-use Patch</a></li>
+                    <li><a onclick="showPage('cat-nibp')">Single-use NIBP</a></li>
+                </ul>
+            </li>
+            <li><a onclick="showPage('contact')">Contact us</a></li>
+        </ul>
+    </nav>
 </header>
 
 <div class="container">
-<section id="home" class="page-section active">
-<h1 style="color:#0056b3;">혁신적인 의료 솔루션, HANA MEDICAL</h1>
-<div class="home-hero">
-<h2 style="font-size: 32px;">Quality & Safety First</h2>
-</div>
-</section>
+    <section id="home" class="page-section active">
+        <h1 style="color:#0056b3;">혁신적인 의료 솔루션, HANA MEDICAL</h1>
+        <div class="home-hero">
+            <h2 style="font-size: 32px;">Quality & Safety First</h2>
+        </div>
+    </section>
 
-<section id="company" class="page-section">
-<h2 style="color:#0056b3;">Company info</h2>
-<div id="company-content" style="font-size: 18px; white-space: pre-line;">데이터를 불러오는 중...</div>
-</section>
+    <section id="company" class="page-section">
+        <h2 style="color:#0056b3;">Company info</h2>
+        <div id="company-content" style="font-size: 18px; white-space: pre-line;">데이터를 불러오는 중...</div>
+    </section>
 
-<section id="cat-sensor" class="page-section">
-<h2 style="color:#0056b3; border-left: 5px solid #0056b3; padding-left: 15px;">Single-use Sensor</h2>
-<div id="list-sensor"></div>
-</section>
-
-<section id="cat-patch" class="page-section">
-<h2 style="color:#0056b3; border-left: 5px solid #0056b3; padding-left: 15px;">Single-use Patch</h2>
-<div id="list-patch"></div>
-</section>
-
-<section id="cat-nibp" class="page-section">
-<h2 style="color:#0056b3; border-left: 5px solid #0056b3; padding-left: 15px;">Single-use NIBP</h2>
-<div id="list-nibp"></div>
-</section>
+    <section id="cat-sensor" class="page-section"><h2 style="color:#0056b3;">Single-use Sensor</h2><div id="list-sensor"></div></section>
+    <section id="cat-patch" class="page-section"><h2 style="color:#0056b3;">Single-use Patch</h2><div id="list-patch"></div></section>
+    <section id="cat-nibp" class="page-section"><h2 style="color:#0056b3;">Single-use NIBP</h2><div id="list-nibp"></div></section>
 
     <section id="contact" class="page-section">
         <div class="contact-form">
             <h2>Contact Us</h2>
-            <form id="emailForm">
-                <input type="text" id="senderName" placeholder="사용자 이름 / User Name" style="width:100%; padding:10px; margin-bottom:10px;">
-                <input type="email" id="senderEmail" placeholder="메일 주소 / E-mail" style="width:100%; padding:10px; margin-bottom:10px;">
-                <textarea id="emailBody" rows="6" placeholder="문의 내용 / Contents" style="width:100%; padding:10px; margin-bottom:10px;"></textarea>
-                <button type="button" onclick="sendMail()" class="btn-send">Send</button>
+            <form action="https://formspree.io/f/mjgljaak" method="POST" id="emailForm">
+                <input type="text" name="userName" placeholder="사용자 이름" required style="width:100%; padding:10px; margin-bottom:10px; border:1px solid #ccc;">
+                <input type="email" name="userEmail" placeholder="발신 메일 주소" required style="width:100%; padding:10px; margin-bottom:10px; border:1px solid #ccc;">
+                <textarea name="message" rows="6" placeholder="문의 내용" required style="width:100%; padding:10px; margin-bottom:10px; border:1px solid #ccc;"></textarea>
+                <button type="submit" class="btn-send">전송하기</button>
             </form>
         </div>
     </section>
-   <section id="contact" class="page-section">
-    <div class="contact-form">
-        <h2>Contact Us</h2>
-        <form action="https://formspree.io/f/mjgljaak" method="POST" id="emailForm">
-            <input type="text" name="userName" placeholder="사용자 이름" required style="width:100%; padding:10px; margin-bottom:10px; border:1px solid #ccc; border-radius:4px;">
-            <input type="email" name="userEmail" placeholder="발신 메일 주소" required style="width:100%; padding:10px; margin-bottom:10px; border:1px solid #ccc; border-radius:4px;">
-            <textarea name="message" rows="6" placeholder="문의 내용" required style="width:100%; padding:10px; margin-bottom:10px; border:1px solid #ccc; border-radius:4px;"></textarea>
-            
-            <button type="submit" class="btn-send">전송하기</button>
-        </form>
-    </div>
-</section>
-
-<script>
-    /* 기존 스크립트 중 sendMail() 함수는 이제 필요 없으므로 삭제하거나 무시해도 됩니다. 
-       HTML의 form 태그가 직접 전송을 담당하게 바뀌었습니다. */
-
-    // 만약 전송 후 커스텀 알림을 띄우고 싶다면 아래 코드를 사용하세요.
-    const form = document.getElementById("emailForm");
-    form.onsubmit = function() {
-        alert("문의해주셔서 감사합니다.");
-    };
-</script>
 </div>
 
 <footer>
+    <p>업체명 : 주식회사 하나메디컬　I　 대표자 : 주세욱</p>
+    <p>서울시 종로구 경희궁 1가길 5</p>
+    <p>Call : +82 31 123 4567　I　e-mail : HANAmedical@gmail.com</p>
+    <p style="margin-top: 15px; font-weight: bold;">copyright ⓒ HANA MEDICAL Co., Ltd. All Rights Reserved.</p>
+</footer>
+
+<script>
+    // [1] 페이지 전환 함수 (최상단 배치)
+    function showPage(pageId) {
+        const sections = document.querySelectorAll('.page-section');
+        const target = document.getElementById(pageId);
