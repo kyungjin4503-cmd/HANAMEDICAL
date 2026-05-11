@@ -93,7 +93,94 @@
 </footer>
 
 <script>
-    // [1] 페이지 전환 함수 (최상단 배치)
+    // [1] 페이지 전환 함수 - 최상단에 배치하여 즉시 인식되게 함
     function showPage(pageId) {
+        console.log("Moving to page:", pageId); // 디버깅용 메시지
         const sections = document.querySelectorAll('.page-section');
         const target = document.getElementById(pageId);
+        
+        if (target) {
+            sections.forEach(sec => sec.classList.remove('active'));
+            target.classList.add('active');
+            window.scrollTo(0, 0);
+        } else {
+            console.error("해당 ID를 가진 섹션을 찾을 수 없습니다:", pageId);
+        }
+    }
+
+    // [2] 제품 데이터 정의
+    const productList = [
+        { id: 1, cat: 'sensor', name: "Product 1", img: "Product 1.PNG", file: "product 1.txt" },
+        { id: 2, cat: 'sensor', name: "Product 2", img: "Product 2.PNG", file: "product 2.txt" },
+        { id: 3, cat: 'sensor', name: "Product 3", img: "Product 3.PNG", file: "product 3.txt" },
+        { id: 4, cat: 'patch', name: "Product 4", img: "Product 4.PNG", file: "product 4.txt" },
+        { id: 5, cat: 'patch', name: "Product 5", img: "Product 5.PNG", file: "product 5.txt" },
+        { id: 6, cat: 'patch', name: "Product 6", img: "Product 6.PNG", file: "product 6.txt" },
+        { id: 7, cat: 'nibp', name: "Product 7", img: "Product 7.PNG", file: "product 7.txt" },
+        { id: 8, cat: 'nibp', name: "Product 8", img: "Product 8.PNG", file: "product 8.txt" }
+    ];
+
+    // [3] 테이블 생성 함수
+    function makeTable(specs) {
+        if (!specs || !specs.includes("Model")) return "<p>상세 정보 준비 중</p>";
+        let rows = specs.trim().split('\n');
+        let html = '<table><thead><tr>';
+        rows[0].split('\t').forEach(h => { html += `<th>${h.trim()}</th>`; });
+        html += '</tr></thead><tbody>';
+        for(let i=1; i<rows.length; i++) {
+            if(!rows[i].trim()) continue;
+            html += '<tr>';
+            rows[i].split('\t').forEach(c => { html += `<td>${c.trim()}</td>`; });
+            html += '</tr>';
+        }
+        return html + '</tbody></table>';
+    }
+
+    // [4] 비동기 데이터 렌더링 함수
+    async function fetchAndRenderData() {
+        // 회사 소개글 로딩
+        try {
+            const res = await fetch('Company description.txt');
+            if (res.ok) {
+                const text = await res.text();
+                const el = document.getElementById('company-content');
+                if (el) el.innerText = text;
+            }
+        } catch (e) { console.warn("소개글 로딩 불가"); }
+
+        // 제품 리스트 로딩
+        for (const p of productList) {
+            try {
+                const res = await fetch(p.file);
+                if (!res.ok) continue;
+                const text = await res.text();
+                const modelIndex = text.indexOf("Model");
+                const specPart = modelIndex !== -1 ? text.substring(modelIndex) : "";
+                
+                const container = document.getElementById(`list-${p.cat}`);
+                if (container) {
+                    container.innerHTML += `
+                        <div class="product-item">
+                            <div class="product-image"><img src="${p.img}" onerror="this.src='https://via.placeholder.com/300?text=No+Image'"></div>
+                            <div class="product-info">
+                                <h3>${p.name}</h3>
+                                ${makeTable(specPart)}
+                            </div>
+                        </div>`;
+                }
+            } catch (e) { console.error(p.name + " 데이터 처리 에러"); }
+        }
+    }
+
+    // [5] 페이지 로드 완료 시 실행
+    window.onload = function() {
+        fetchAndRenderData();
+
+        const emailForm = document.getElementById("emailForm");
+        if (emailForm) {
+            emailForm.onsubmit = function() {
+                alert("전송 중입니다. 잠시만 기다려 주세요.");
+            };
+        }
+    };
+</script>
