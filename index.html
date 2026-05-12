@@ -154,14 +154,14 @@
          * [핵심 기능] 외부 텍스트 파일(footer, company, product)들을 읽어와 화면에 출력
          */
         async function fetchAndRenderData() {
-            // 1. 푸터 데이터 로드 (footer.txt)
+            // 1. 푸터 데이터 로드 (Footer.txt)
             try {
-                const footerRes = await fetch('footer.txt');
+                const footerRes = await fetch('Footer.txt');
                 if (footerRes.ok) {
                     const footerTxt = await footerRes.text();
                     document.getElementById('footer-content').innerText = footerTxt;
                 }
-            } catch (e) { console.warn("footer.txt 로드 실패"); }
+            } catch (e) { console.warn("Footer.txt 로드 실패"); }
 
             // 2. 회사 소개 데이터 로드 (Company description.txt)
             try {
