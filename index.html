@@ -5,64 +5,141 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HANA MEDICAL - 의료기기 전문 기업</title>
     <style>
-        /* 기본 스타일 */
+        /* [기본 스타일] 모든 요소의 기본 폰트와 행간, 부드러운 스크롤 설정 */
         body { font-family: 'Malgun Gothic', sans-serif; margin: 0; padding: 0; color: #333; line-height: 1.6; scroll-behavior: smooth; }
-        header { display: flex; align-items: center; padding: 15px 5%; background: #fff; border-bottom: 2px solid #0056b3; position: sticky; top: 0; z-index: 1000; }
-        .logo img { height: 50px; display: block; margin-right: 40px; }
-        nav ul { list-style: none; display: flex; margin: 0; padding: 0; }
-        nav ul li { position: relative; margin-right: 10px; }
-        nav ul li a { text-decoration: none; color: #0056b3; font-weight: bold; padding: 10px 15px; display: block; transition: 0.3s; cursor: pointer; }
+        
+        /* [헤더] 
+           flex-wrap: wrap을 사용하여 화면이 좁아지면 메뉴가 로고 아래로 자연스럽게 내려가도록 설정.
+           align-items: center로 세로축 중앙 정렬. */
+        header { 
+            display: flex; 
+            flex-wrap: wrap; 
+            align-items: center; 
+            padding: 15px 5%; 
+            background: #fff; 
+            border-bottom: 2px solid #0056b3; 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+        }
+
+        /* [로고] 이미지 높이를 고정하고 메뉴와의 최소 간격 설정 */
+        .logo img { height: 45px; display: block; margin-right: 30px; }
+        
+        /* [내비게이션 메뉴] 
+           flex-wrap을 적용해 메뉴 아이템이 많아도 모바일에서 줄바꿈이 되도록 함. */
+        nav { flex: 1; min-width: 300px; }
+        nav ul { list-style: none; display: flex; flex-wrap: wrap; margin: 0; padding: 0; }
+        nav ul li { position: relative; }
+        nav ul li a { 
+            text-decoration: none; 
+            color: #0056b3; 
+            font-weight: bold; 
+            padding: 10px 15px; 
+            display: block; 
+            transition: 0.3s; 
+            cursor: pointer; 
+            white-space: nowrap; /* 글자 줄바꿈 방지 */
+        }
+        /* 메뉴 호버 시 배경색과 글자색 반전 효과 */
         nav ul li:hover > a { background: #0056b3; color: #fff; border-radius: 4px; }
-        .dropdown { display: none; position: absolute; background: #fff; box-shadow: 0 8px 16px rgba(0,0,0,0.1); min-width: 180px; z-index: 10; border-top: 2px solid #0056b3; top: 100%; left: 0; }
+        
+        /* [드롭다운 메뉴] 평소엔 숨겨져 있다가 상위 메뉴 호버 시 나타남 */
+        .dropdown { 
+            display: none; 
+            position: absolute; 
+            background: #fff; 
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1); 
+            min-width: 160px; 
+            z-index: 10; 
+            border-top: 2px solid #0056b3; 
+            top: 100%; 
+            left: 0; 
+        }
         nav ul li:hover .dropdown { display: block; }
         .dropdown li a { padding: 12px 15px; font-weight: normal; border-bottom: 1px solid #eee; font-size: 14px; }
         
+        /* [모바일 대응 미디어 쿼리] 화면 폭이 768px 이하일 때 적용 */
+        @media (max-width: 768px) {
+            header { padding: 10px 3%; justify-content: center; } /* 모바일 환경 중앙 정렬 */
+            .logo { width: 100%; text-align: center; margin-bottom: 10px; }
+            .logo img { margin: 0 auto; }
+            nav ul { justify-content: center; }
+            .container { padding: 20px 5%; }
+        }
+
+        /* [콘텐츠 레이아웃] */
         .container { padding: 40px 10%; min-height: 600px; }
-        .page-section { display: none; }
-        .page-section.active { display: block; }
+        .page-section { display: none; } /* 기본적으로 모든 섹션 숨김 */
+        .page-section.active { display: block; } /* 선택된 섹션만 표시 */
         
-        .home-hero { width: 100%; height: 450px; background: url('Main image.png') no-repeat center center; background-size: cover; border-radius: 10px; margin-top: 20px; display: flex; align-items: center; justify-content: center; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        /* [홈 히어로 영역] */
+        .home-hero { 
+            width: 100%; height: 350px; 
+            background: url('Main image.png') no-repeat center center; 
+            background-size: cover; border-radius: 10px; margin-top: 20px; 
+            display: flex; align-items: center; justify-content: center; 
+            color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); 
+        }
         
-        /* 제품 레이아웃 */
-        .product-item { display: flex; gap: 40px; align-items: flex-start; padding: 40px 0; border-bottom: 1px solid #eee; }
-        .product-image { flex: 1; }
+        /* [제품 리스트 스타일] 이미지와 텍스트를 flex로 배치 */
+        .product-item { display: flex; flex-wrap: wrap; gap: 20px; padding: 30px 0; border-bottom: 1px solid #eee; }
+        .product-image { flex: 1; min-width: 250px; }
         .product-image img { width: 100%; border: 1px solid #ddd; border-radius: 8px; }
-        .product-info { flex: 1.5; }
-        .product-info h3 { color: #0056b3; margin-top: 0; font-size: 24px; border-bottom: 2px solid #e7f1ff; padding-bottom: 10px; }
-        .product-description { margin: 15px 0; color: #555; font-size: 15px; white-space: pre-line; }
+        .product-info { flex: 2; min-width: 300px; }
+        .product-info h3 { color: #0056b3; margin-top: 0; border-bottom: 2px solid #e7f1ff; padding-bottom: 10px; }
+        .product-description { margin: 15px 0; font-size: 15px; white-space: pre-line; } 
         
-        /* 테이블 스타일 */
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 13px; }
-        table, th, td { border: 1px solid #0056b3; }
-        th { background: #e7f1ff; color: #0056b3; padding: 8px; }
-        td { padding: 6px; text-align: center; }
+        /* [제품 사양 표] 
+           표가 화면을 넘칠 경우 가로 스크롤(overflow-x) 생성 */
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 12px; overflow-x: auto; display: block; }
+        th, td { border: 1px solid #0056b3; padding: 8px; text-align: center; min-width: 80px; }
+        th { background: #e7f1ff; color: #0056b3; }
         
-        .contact-form { max-width: 600px; margin: 0 auto; background: #f9f9f9; padding: 30px; border-radius: 10px; border-top: 5px solid #0056b3; }
-        .btn-send { background: #0056b3; color: white; border: none; padding: 15px; cursor: pointer; width: 100%; font-weight: bold; }
+        /* [문의 양식 스타일] */
+        .contact-form { max-width: 600px; margin: 0 auto; background: #f9f9f9; padding: 20px; border-radius: 10px; border-top: 5px solid #0056b3; }
+        .btn-send { background: #0056b3; color: white; border: none; padding: 15px; width: 100%; font-weight: bold; cursor: pointer; }
         
-        footer { background: #f4f4f4; color: #555; padding: 40px 10%; font-size: 14px; border-top: 1px solid #ddd; margin-top: 60px; }
+        /* [푸터] 
+           white-space: pre-line으로 텍스트 파일의 줄바꿈 유지. 
+           왼쪽 정렬(기본값) 유지. */
+        footer { 
+            background: #f4f4f4; 
+            color: #555; 
+            padding: 30px 5%; 
+            font-size: 13px; 
+            border-top: 1px solid #ddd; 
+            margin-top: 40px; 
+            white-space: pre-line; 
+        }
     </style>
     
     <script>
-        // 페이지 전환 함수
+        /**
+         * [기능] 클릭한 메뉴의 ID를 받아 해당 섹션만 보여주는 함수
+         */
         function showPage(pageId) {
             const sections = document.querySelectorAll('.page-section');
             const target = document.getElementById(pageId);
             if (target) {
                 sections.forEach(s => s.classList.remove('active'));
                 target.classList.add('active');
-                window.scrollTo(0, 0);
+                window.scrollTo(0, 0); // 화면 최상단으로 이동
             }
         }
 
-        // TSV 형식의 텍스트를 HTML 테이블로 변환하는 함수
+        /**
+         * [기능] 탭(Tab)으로 구분된 문자열을 받아 HTML 표(Table) 태그로 변환하는 함수
+         */
         function makeTable(specs) {
             if (!specs || !specs.includes("Model")) return "";
             try {
                 let rows = specs.trim().split('\n');
                 let html = '<table><thead><tr>';
+                // 첫 줄(헤더) 생성
                 rows[0].split('\t').forEach(h => { html += `<th>${h.trim()}</th>`; });
                 html += '</tr></thead><tbody>';
+                // 데이터 줄 생성
                 for(let i=1; i<rows.length; i++) {
                     if(!rows[i].trim()) continue;
                     html += '<tr>';
@@ -73,8 +150,29 @@
             } catch (e) { return ""; }
         }
 
-        // 데이터 로드 및 동적 렌더링
+        /**
+         * [핵심 기능] 외부 텍스트 파일(footer, company, product)들을 읽어와 화면에 출력
+         */
         async function fetchAndRenderData() {
+            // 1. 푸터 데이터 로드 (footer.txt)
+            try {
+                const footerRes = await fetch('footer.txt');
+                if (footerRes.ok) {
+                    const footerTxt = await footerRes.text();
+                    document.getElementById('footer-content').innerText = footerTxt;
+                }
+            } catch (e) { console.warn("footer.txt 로드 실패"); }
+
+            // 2. 회사 소개 데이터 로드 (Company description.txt)
+            try {
+                const companyRes = await fetch('Company description.txt');
+                if (companyRes.ok) {
+                    const companyTxt = await companyRes.text();
+                    document.getElementById('company-content').innerText = companyTxt;
+                }
+            } catch (e) { console.warn("Company description.txt 로드 실패"); }
+
+            // 3. 제품 리스트 정의 및 데이터 개별 로드
             const productList = [
                 { id: 1, cat: 'sensor', img: "Product 1.PNG", file: "product 1.txt" },
                 { id: 2, cat: 'sensor', img: "Product 2.PNG", file: "product 2.txt" },
@@ -86,59 +184,41 @@
                 { id: 8, cat: 'nibp', img: "Product 8.PNG", file: "product 8.txt" }
             ];
 
-            // 회사 소개글 로드
-            try {
-                const res = await fetch('Company description.txt');
-                if (res.ok) {
-                    const txt = await res.text();
-                    document.getElementById('company-content').innerText = txt;
-                }
-            } catch (e) { console.warn("Company description file missing."); }
-
-            // 제품별 파일 로드 및 파싱
             for (const p of productList) {
                 try {
                     const res = await fetch(p.file);
                     if (!res.ok) continue;
                     const fullText = await res.text();
-                    
-                    // 1. 줄 단위 분리하여 제목(첫 줄) 추출
                     const lines = fullText.split('\n');
-                    const titleFromFile = lines[0].trim();
                     
-                    // 2. 제목 제외한 나머지 본문
+                    // 파일 첫 줄은 제품 제목
+                    const titleFromFile = lines[0].trim();
+                    // 나머지 줄은 본문
                     const bodyText = lines.slice(1).join('\n').trim();
                     
-                    // 3. "Model" 키워드 기준으로 설명과 표(사양) 분리
+                    // "Model" 단어를 기준으로 설명과 표 데이터를 나눔
                     const modelIndex = bodyText.indexOf("Model");
-                    let descriptionPart = "";
-                    let specPart = "";
+                    let descriptionPart = modelIndex !== -1 ? bodyText.substring(0, modelIndex).trim() : bodyText;
+                    let specPart = modelIndex !== -1 ? bodyText.substring(modelIndex).trim() : "";
 
-                    if (modelIndex !== -1) {
-                        descriptionPart = bodyText.substring(0, modelIndex).trim();
-                        specPart = bodyText.substring(modelIndex).trim();
-                    } else {
-                        descriptionPart = bodyText;
-                    }
-
+                    // 각 제품 카테고리에 맞는 div 영역에 HTML 삽입
                     const container = document.getElementById(`list-${p.cat}`);
                     if (container) {
                         container.innerHTML += `
                             <div class="product-item">
-                                <div class="product-image">
-                                    <img src="${p.img}" onerror="this.src='https://via.placeholder.com/300?text=No+Image'">
-                                </div>
+                                <div class="product-image"><img src="${p.img}" onerror="this.src='https://via.placeholder.com/300?text=No+Image'"></div>
                                 <div class="product-info">
-                                    <h3>${titleFromFile}</h3>
-                                    <div class="product-description">${descriptionPart}</div>
-                                    ${makeTable(specPart)}
+                                    <h3>${titleFromFile}</h3> 
+                                    <div class="product-description">${descriptionPart}</div> 
+                                    ${makeTable(specPart)} 
                                 </div>
                             </div>`;
                     }
-                } catch (e) { console.error("Error loading product:", p.file, e); }
+                } catch (e) { console.error("제품 로드 에러:", p.file, e); }
             }
         }
-
+        
+        // 브라우저가 화면을 다 그리면 데이터를 가져오기 시작함
         window.addEventListener('DOMContentLoaded', fetchAndRenderData);
     </script>
 </head>
@@ -166,12 +246,12 @@
 <div class="container">
     <section id="home" class="page-section active">
         <h1 style="color:#0056b3;">혁신적인 의료 솔루션, HANA MEDICAL</h1>
-        <div class="home-hero"><h2 style="font-size: 32px;">Quality & Safety First</h2></div>
+        <div class="home-hero"><h2>Quality & Safety First</h2></div>
     </section>
 
     <section id="company" class="page-section">
         <h2 style="color:#0056b3;">Company info</h2>
-        <div id="company-content" style="font-size: 18px; white-space: pre-line;">데이터 로딩 중...</div>
+        <div id="company-content" style="white-space: pre-line;">데이터 로딩 중...</div>
     </section>
 
     <section id="cat-sensor" class="page-section"><h2 style="color:#0056b3;">Single-use Sensor</h2><div id="list-sensor"></div></section>
@@ -191,15 +271,12 @@
     </section>
 </div>
 
-<footer>
-    <p>업체명 : 주식회사 하나메디컬　I　 대표자 : 주세욱</p>
-    <p>서울시 종로구 경희궁 1가길 5</p>
-    <p>Call : +82 31 123 4567　I　e-mail : HANAmedical@gmail.com</p>
-    <p style="margin-top: 15px; font-weight: bold;">copyright ⓒ HANA MEDICAL Co., Ltd. All Rights Reserved.</p>
+<footer id="footer-content">
+    데이터를 불러오는 중입니다...
 </footer>
 
 <script>
-    // 폼 전송 알림
+    // 폼 전송 시 알림창 띄우기
     document.getElementById("emailForm").onsubmit = function() {
         alert("문의해주셔서 감사합니다.");
     };
