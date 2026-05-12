@@ -16,31 +16,38 @@
         .dropdown { display: none; position: absolute; background: #fff; box-shadow: 0 8px 16px rgba(0,0,0,0.1); min-width: 180px; z-index: 10; border-top: 2px solid #0056b3; top: 100%; left: 0; }
         nav ul li:hover .dropdown { display: block; }
         .dropdown li a { padding: 12px 15px; font-weight: normal; border-bottom: 1px solid #eee; font-size: 14px; }
+        
         .container { padding: 40px 10%; min-height: 600px; }
         .page-section { display: none; }
         .page-section.active { display: block; }
+        
         .home-hero { width: 100%; height: 450px; background: url('Main image.png') no-repeat center center; background-size: cover; border-radius: 10px; margin-top: 20px; display: flex; align-items: center; justify-content: center; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        
+        /* 제품 레이아웃 */
         .product-item { display: flex; gap: 40px; align-items: flex-start; padding: 40px 0; border-bottom: 1px solid #eee; }
         .product-image { flex: 1; }
         .product-image img { width: 100%; border: 1px solid #ddd; border-radius: 8px; }
         .product-info { flex: 1.5; }
         .product-info h3 { color: #0056b3; margin-top: 0; font-size: 24px; border-bottom: 2px solid #e7f1ff; padding-bottom: 10px; }
         .product-description { margin: 15px 0; color: #555; font-size: 15px; white-space: pre-line; }
+        
+        /* 테이블 스타일 */
         table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 13px; }
         table, th, td { border: 1px solid #0056b3; }
         th { background: #e7f1ff; color: #0056b3; padding: 8px; }
         td { padding: 6px; text-align: center; }
+        
         .contact-form { max-width: 600px; margin: 0 auto; background: #f9f9f9; padding: 30px; border-radius: 10px; border-top: 5px solid #0056b3; }
         .btn-send { background: #0056b3; color: white; border: none; padding: 15px; cursor: pointer; width: 100%; font-weight: bold; }
+        
         footer { background: #f4f4f4; color: #555; padding: 40px 10%; font-size: 14px; border-top: 1px solid #ddd; margin-top: 60px; }
     </style>
     
     <script>
-        // 1. 페이지 전환 함수
+        // 페이지 전환 함수
         function showPage(pageId) {
             const sections = document.querySelectorAll('.page-section');
             const target = document.getElementById(pageId);
-            
             if (target) {
                 sections.forEach(s => s.classList.remove('active'));
                 target.classList.add('active');
@@ -48,7 +55,7 @@
             }
         }
 
-        // 2. 테이블 생성 보조 함수
+        // TSV 형식의 텍스트를 HTML 테이블로 변환하는 함수
         function makeTable(specs) {
             if (!specs || !specs.includes("Model")) return "";
             try {
@@ -66,46 +73,52 @@
             } catch (e) { return ""; }
         }
 
-        // 3. 데이터 로드 및 렌더링
+        // 데이터 로드 및 동적 렌더링
         async function fetchAndRenderData() {
             const productList = [
-                { id: 1, cat: 'sensor', name: "Product 1", img: "Product 1.PNG", file: "product 1.txt" },
-                { id: 2, cat: 'sensor', name: "Product 2", img: "Product 2.PNG", file: "product 2.txt" },
-                { id: 3, cat: 'sensor', name: "Product 3", img: "Product 3.PNG", file: "product 3.txt" },
-                { id: 4, cat: 'patch', name: "Product 4", img: "Product 4.PNG", file: "product 4.txt" },
-                { id: 5, cat: 'patch', name: "Product 5", img: "Product 5.PNG", file: "product 5.txt" },
-                { id: 6, cat: 'patch', name: "Product 6", img: "Product 6.PNG", file: "product 6.txt" },
-                { id: 7, cat: 'nibp', name: "Product 7", img: "Product 7.PNG", file: "product 7.txt" },
-                { id: 8, cat: 'nibp', name: "Product 8", img: "Product 8.PNG", file: "product 8.txt" }
+                { id: 1, cat: 'sensor', img: "Product 1.PNG", file: "product 1.txt" },
+                { id: 2, cat: 'sensor', img: "Product 2.PNG", file: "product 2.txt" },
+                { id: 3, cat: 'sensor', img: "Product 3.PNG", file: "product 3.txt" },
+                { id: 4, cat: 'patch', img: "Product 4.PNG", file: "product 4.txt" },
+                { id: 5, cat: 'patch', img: "Product 5.PNG", file: "product 5.txt" },
+                { id: 6, cat: 'patch', img: "Product 6.PNG", file: "product 6.txt" },
+                { id: 7, cat: 'nibp', img: "Product 7.PNG", file: "product 7.txt" },
+                { id: 8, cat: 'nibp', img: "Product 8.PNG", file: "product 8.txt" }
             ];
 
-            // 회사 소개글 로딩
+            // 회사 소개글 로드
             try {
                 const res = await fetch('Company description.txt');
                 if (res.ok) {
                     const txt = await res.text();
-                    const el = document.getElementById('company-content');
-                    if (el) el.innerText = txt;
+                    document.getElementById('company-content').innerText = txt;
                 }
             } catch (e) { console.warn("Company description file missing."); }
 
-            // 제품별 로딩 및 데이터 파싱
+            // 제품별 파일 로드 및 파싱
             for (const p of productList) {
                 try {
                     const res = await fetch(p.file);
                     if (!res.ok) continue;
-                    const text = await res.text();
-
-                    // [수정된 부분] 텍스트를 설명(Description)과 사양(Specs)으로 분리
-                    const modelIndex = text.indexOf("Model");
+                    const fullText = await res.text();
+                    
+                    // 1. 줄 단위 분리하여 제목(첫 줄) 추출
+                    const lines = fullText.split('\n');
+                    const titleFromFile = lines[0].trim();
+                    
+                    // 2. 제목 제외한 나머지 본문
+                    const bodyText = lines.slice(1).join('\n').trim();
+                    
+                    // 3. "Model" 키워드 기준으로 설명과 표(사양) 분리
+                    const modelIndex = bodyText.indexOf("Model");
                     let descriptionPart = "";
                     let specPart = "";
 
                     if (modelIndex !== -1) {
-                        descriptionPart = text.substring(0, modelIndex).trim(); // Model 이전 텍스트
-                        specPart = text.substring(modelIndex).trim();           // Model 포함 이후 텍스트
+                        descriptionPart = bodyText.substring(0, modelIndex).trim();
+                        specPart = bodyText.substring(modelIndex).trim();
                     } else {
-                        descriptionPart = text.trim(); // Model이 없으면 전체를 설명으로 간주
+                        descriptionPart = bodyText;
                     }
 
                     const container = document.getElementById(`list-${p.cat}`);
@@ -116,13 +129,13 @@
                                     <img src="${p.img}" onerror="this.src='https://via.placeholder.com/300?text=No+Image'">
                                 </div>
                                 <div class="product-info">
-                                    <h3>${p.name}</h3>
+                                    <h3>${titleFromFile}</h3>
                                     <div class="product-description">${descriptionPart}</div>
                                     ${makeTable(specPart)}
                                 </div>
                             </div>`;
                     }
-                } catch (e) { console.error("Error loading product:", p.name, e); }
+                } catch (e) { console.error("Error loading product:", p.file, e); }
             }
         }
 
