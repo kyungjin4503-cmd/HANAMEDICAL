@@ -162,13 +162,24 @@
         <div class="contact-form">
             <h2>Contact Us</h2>
             <form action="https://formspree.io/f/mjgljaak" method="POST" id="emailForm">
-                <input type="text" name="userName" placeholder="사용자 이름" required style="width:100%; padding:10px; margin-bottom:10px; border:1px solid #ccc;">
-                <input type="email" name="userEmail" placeholder="발신 메일 주소" required style="width:100%; padding:10px; margin-bottom:10px; border:1px solid #ccc;">
-                <textarea name="message" rows="6" placeholder="문의 내용" required style="width:100%; padding:10px; margin-bottom:10px; border:1px solid #ccc;"></textarea>
+                <input type="text" name="userName" placeholder="User name" required style="width:100%; padding:10px; margin-bottom:10px; border:1px solid #ccc;">
+                <input type="email" name="userEmail" placeholder="User E-mail" required style="width:100%; padding:10px; margin-bottom:10px; border:1px solid #ccc;">
+                <textarea name="message" rows="6" placeholder="Contents" required style="width:100%; padding:10px; margin-bottom:10px; border:1px solid #ccc;"></textarea>
                 <button type="submit" class="btn-send">전송하기</button>
             </form>
         </div>
     </section>
+
+<script>
+    /* 기존 스크립트 중 sendMail() 함수는 이제 필요 없으므로 삭제하거나 무시해도 됩니다. 
+       HTML의 form 태그가 직접 전송을 담당하게 바뀌었습니다. */
+
+    // 만약 전송 후 커스텀 알림을 띄우고 싶다면 아래 코드를 사용하세요.
+    const form = document.getElementById("emailForm");
+    form.onsubmit = function() {
+        alert("문의해주셔서 감사합니다.");
+    };
+</script>
 </div>
 
 <footer>
