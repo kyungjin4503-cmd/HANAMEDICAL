@@ -25,6 +25,7 @@
         .product-image img { width: 100%; border: 1px solid #ddd; border-radius: 8px; }
         .product-info { flex: 1.5; }
         .product-info h3 { color: #0056b3; margin-top: 0; font-size: 24px; border-bottom: 2px solid #e7f1ff; padding-bottom: 10px; }
+        .product-description { margin: 15px 0; color: #555; font-size: 15px; white-space: pre-line; }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 13px; }
         table, th, td { border: 1px solid #0056b3; }
         th { background: #e7f1ff; color: #0056b3; padding: 8px; }
@@ -35,9 +36,8 @@
     </style>
     
     <script>
-        // 1. 페이지 전환 함수 (가장 먼저 정의)
+        // 1. 페이지 전환 함수
         function showPage(pageId) {
-            console.log("Show page:", pageId);
             const sections = document.querySelectorAll('.page-section');
             const target = document.getElementById(pageId);
             
@@ -50,7 +50,7 @@
 
         // 2. 테이블 생성 보조 함수
         function makeTable(specs) {
-            if (!specs || !specs.includes("Model")) return "<p>상세 정보 준비 중입니다.</p>";
+            if (!specs || !specs.includes("Model")) return "";
             try {
                 let rows = specs.trim().split('\n');
                 let html = '<table><thead><tr>';
@@ -66,7 +66,7 @@
             } catch (e) { return ""; }
         }
 
-        // 3. 데이터 로드 및 렌더링 (에러 방어 로직 강화)
+        // 3. 데이터 로드 및 렌더링
         async function fetchAndRenderData() {
             const productList = [
                 { id: 1, cat: 'sensor', name: "Product 1", img: "Product 1.PNG", file: "product 1.txt" },
@@ -79,7 +79,7 @@
                 { id: 8, cat: 'nibp', name: "Product 8", img: "Product 8.PNG", file: "product 8.txt" }
             ];
 
-            // 회사 소개글
+            // 회사 소개글 로딩
             try {
                 const res = await fetch('Company description.txt');
                 if (res.ok) {
@@ -87,39 +87,46 @@
                     const el = document.getElementById('company-content');
                     if (el) el.innerText = txt;
                 }
-            } catch (e) { console.warn("Description file missing."); }
+            } catch (e) { console.warn("Company description file missing."); }
 
-            // 제품별 로딩
+            // 제품별 로딩 및 데이터 파싱
             for (const p of productList) {
                 try {
                     const res = await fetch(p.file);
                     if (!res.ok) continue;
                     const text = await res.text();
-                    const specPart = text.includes("Model") ? text.substring(text.indexOf("Model")) : "";
+
+                    // [수정된 부분] 텍스트를 설명(Description)과 사양(Specs)으로 분리
+                    const modelIndex = text.indexOf("Model");
+                    let descriptionPart = "";
+                    let specPart = "";
+
+                    if (modelIndex !== -1) {
+                        descriptionPart = text.substring(0, modelIndex).trim(); // Model 이전 텍스트
+                        specPart = text.substring(modelIndex).trim();           // Model 포함 이후 텍스트
+                    } else {
+                        descriptionPart = text.trim(); // Model이 없으면 전체를 설명으로 간주
+                    }
+
                     const container = document.getElementById(`list-${p.cat}`);
                     if (container) {
                         container.innerHTML += `
                             <div class="product-item">
-                                <div class="product-image"><img src="${p.img}" onerror="this.src='https://via.placeholder.com/300?text=No+Image'"></div>
+                                <div class="product-image">
+                                    <img src="${p.img}" onerror="this.src='https://via.placeholder.com/300?text=No+Image'">
+                                </div>
                                 <div class="product-info">
                                     <h3>${p.name}</h3>
+                                    <div class="product-description">${descriptionPart}</div>
                                     ${makeTable(specPart)}
                                 </div>
                             </div>`;
                     }
-                } catch (e) { console.error("Error loading product:", p.name); }
+                } catch (e) { console.error("Error loading product:", p.name, e); }
             }
         }
 
-        // 4. 페이지 로드 시 실행
-        window.addEventListener('DOMContentLoaded', () => {
-            fetchAndRenderData();
-            
-            const emailForm = document.getElementById("emailForm");
-            if (emailForm) {
-                emailForm.onsubmit = () => { alert("문의가 전송됩니다."); };
-            }
-        });
+        window.addEventListener('DOMContentLoaded', fetchAndRenderData);
     </script>
 </head>
 <body>
@@ -169,17 +176,6 @@
             </form>
         </div>
     </section>
-
-<script>
-    /* 기존 스크립트 중 sendMail() 함수는 이제 필요 없으므로 삭제하거나 무시해도 됩니다. 
-       HTML의 form 태그가 직접 전송을 담당하게 바뀌었습니다. */
-
-    // 만약 전송 후 커스텀 알림을 띄우고 싶다면 아래 코드를 사용하세요.
-    const form = document.getElementById("emailForm");
-    form.onsubmit = function() {
-        alert("문의해주셔서 감사합니다.");
-    };
-</script>
 </div>
 
 <footer>
@@ -188,6 +184,13 @@
     <p>Call : +82 31 123 4567　I　e-mail : HANAmedical@gmail.com</p>
     <p style="margin-top: 15px; font-weight: bold;">copyright ⓒ HANA MEDICAL Co., Ltd. All Rights Reserved.</p>
 </footer>
+
+<script>
+    // 폼 전송 알림
+    document.getElementById("emailForm").onsubmit = function() {
+        alert("문의해주셔서 감사합니다.");
+    };
+</script>
 
 </body>
 </html>
